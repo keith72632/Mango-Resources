@@ -1,6 +1,6 @@
- /*
- * Pass the variable(key) for data point established in the Meta Data Point tab to
- * this function. This can only take 'actual' data points. Can not take other Meta
+/*
+ * Pass the variable(key) for data point established in the Meta Data Point tab to 
+ * this function. This can only take 'actual' data points. Can not take other Meta 
  * points.
  */
 
@@ -25,7 +25,7 @@ function getPeakFlow(dpoint)
     var fin = new Date();
     var day_range = (1000 * 60) * 1440; //24 hours
     fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
-
+    
     var start = new Date(fin.getTime() - day_range);
 
     var mgd = dpoint.getStats(start.getTime(), fin.getTime()).maximumValue;
@@ -33,20 +33,37 @@ function getPeakFlow(dpoint)
     return gpm;
 }
 
-function mgd_to_gpm(value)
-{
-    return (value * 1000000) / 1440;
-}
 
+//gets the amount of fluoride fed within the last 24 hours in pounds.
 function fluoride(dpoint)
 {
     var fin = new Date();
     var day_range = (1000 * 60) * 1440; //24 hours
     fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
-
+    
     var start = new Date(fin.getTime() - day_range);
 
     var first = dpoint.getStats(start.getTime(), fin.getTime()).firstValue;
     var last = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
-    return last;
+    var first_int = float_to_int(first);
+    var last_int = float_to_int(last);
+    var result = (first_int - last_int);
+    return result;
 }
+
+/**********************************************************************
+ *                      Utility Functions                             *
+ **********************************************************************/
+ 
+ function mgd_to_gpm(value)
+{
+    return (value * 1000000) / 1440;
+}
+
+function float_to_int(dec_num)
+{
+    var str = dec_num.toString();
+    var whole_num = str.split('.');
+    return parseInt(whole_num[0]);
+}
+
