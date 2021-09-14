@@ -120,3 +120,15 @@ function float_to_int(dec_num)
     return parseInt(whole_num[0]);
 }
 
+//returns data point's lowest value for previous day
+function get_prev_low(dpoint)
+{
+    var end = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    end.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(end.getTime() - day_range);
+
+    var low = dpoint.getStats(start.getTime(), end.getTime()).minimumValue;
+    return low;
+}
