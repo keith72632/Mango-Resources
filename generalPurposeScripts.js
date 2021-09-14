@@ -51,6 +51,50 @@ function fluoride(dpoint)
     return result;
 }
 
+/*
+ * This is the last fluoride weight value registered(T00:00)
+ */
+function fluoride_level(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+
+    var first = dpoint.getStats(start.getTime(), fin.getTime()).firstValue;
+    var last = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
+    var first_int = float_to_int(first);
+    var last_int = float_to_int(last);
+    var result = (first_int - last_int);
+    return last;
+}
+
+
+/*
+ * Calculates the amount of ammonia fed for the previous 24 hours
+ */
+function ammonia(finish_meter, chlorine_res)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+    
+    var first_fin_reading = finish_meter.getStats(start.getTime(), fin.getTime()).firstValue;
+    var last_fin_reading = finish_meter.getStats(start.getTime(), fin.getTime()).lastValue;
+    
+    var finish_flow_total = (last_fin_reading - first_fin_reading) / 1000;
+    
+    var chlorine_avg = chlorine_res.getStats(start.getTime(), fin.getTime()).average;
+    
+    var ammonia_total =(finish_flow_total * chlorine_avg * 8.34) / 3;
+    
+    return ammonia_total;
+
+}
+
 /**********************************************************************
  *                      Utility Functions                             *
  **********************************************************************/
@@ -66,4 +110,3 @@ function float_to_int(dec_num)
     var whole_num = str.split('.');
     return parseInt(whole_num[0]);
 }
-
