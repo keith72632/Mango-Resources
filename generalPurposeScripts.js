@@ -51,9 +51,7 @@ function fluoride(dpoint)
     return result;
 }
 
-/*
- * This is the last fluoride weight value registered(T00:00)
- */
+//This is the last fluoride weight value registered(T00:00)
 function fluoride_level(dpoint)
 {
     var fin = new Date();
@@ -71,9 +69,7 @@ function fluoride_level(dpoint)
 }
 
 
-/*
- * Calculates the amount of ammonia fed for the previous 24 hours
- */
+//Calculates the amount of ammonia fed for the previous 24 hours
 function ammonia(finish_meter, chlorine_res)
 {
     var fin = new Date();
@@ -95,6 +91,19 @@ function ammonia(finish_meter, chlorine_res)
 
 }
 
+//Lowest clearwell reading over 24 hour period
+function clearwell_low(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+
+    var low = dpoint.getStats(start.getTime(), fin.getTime()).minimumValue;
+    return low;
+}
+
 /**********************************************************************
  *                      Utility Functions                             *
  **********************************************************************/
@@ -110,3 +119,4 @@ function float_to_int(dec_num)
     var whole_num = str.split('.');
     return parseInt(whole_num[0]);
 }
+
