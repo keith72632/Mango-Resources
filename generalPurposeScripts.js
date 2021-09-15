@@ -3,18 +3,19 @@
  * this function. This can only take 'actual' data points. Can not take other Meta 
  * points.
  */
-
-function getMidnightValue(dpoint)
+function get_last_value(dpoint)
 {
     var list = [];
-    var start = new Date();
     var fin = new Date();
-    start.setHours(0, 0, 0, 0);
-    fin.setHours(0, 1, 0, 0);
-    list = dpoint.pointValuesBetween(start.getTime(), fin.getTime());
-    return list[0];
-}
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
 
+    var mgd = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
+    var gpm = mgd_to_gpm(mgd);
+    return mgd;
+}
 /*
  * Logs the max flow in gallons per minute starting from $(date-1)T-00:00 to $(date)T-00:00. Operators will record this number
  * after clock hits midnight, so data must range from present time(00:00) to the midnight before.
@@ -104,6 +105,22 @@ function clearwell_low(dpoint)
     return low;
 }
 
+function total_flow(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+    
+    var first_reading = dpoint.getStats(start.getTime(), fin.getTime()).firstValue;
+    var last_reading = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
+    
+    var flow_total = (last_reading - first_reading) / 1000;
+    
+    return flow_total;
+}
+
 /**********************************************************************
  *                      Utility Functions                             *
  **********************************************************************/
@@ -120,3 +137,28 @@ function float_to_int(dec_num)
     return parseInt(whole_num[0]);
 }
 
+//returns data point's lowest value for previous day
+function get_prev_low(dpoint)
+{
+    var end = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    end.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(end.getTime() - day_range);
+
+    var low = dpoint.getStats(start.getTime(), end.getTime()).minimumValue;
+    return low;
+}
+
+function get_prev_avg(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+    
+    var chlorine_avg = dpoint.getStats(start.getTime(), fin.getTime()).average;
+    
+    return chlorine_avg;
+}
