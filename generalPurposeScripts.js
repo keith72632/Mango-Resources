@@ -92,6 +92,14 @@ function ammonia(finish_meter, chlorine_res)
 
 }
 
+//Calculates the amount of chlorine fed during previous 24 hours
+function chlorine(dpoint, residual)
+{
+    var flow = total_flow(dpoint);
+    
+    return flow * residual * 8.34;
+}
+
 //Lowest clearwell reading over 24 hour period
 function clearwell_low(dpoint)
 {
@@ -105,6 +113,7 @@ function clearwell_low(dpoint)
     return low;
 }
 
+//calculates the total flow for any given meter during previous 24 hours
 function total_flow(dpoint)
 {
     var fin = new Date();
@@ -119,6 +128,28 @@ function total_flow(dpoint)
     var flow_total = (last_reading - first_reading) / 1000;
     
     return flow_total;
+}
+
+function hours_run(dpoint)
+{
+    var list = [];
+    var minutes = 0;
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+    
+    var vals = dpoint.pointValuesBetween(start.getTime(), fin.getTime());
+    
+    for(var i = 0; i < vals.length; i++)
+    {
+        if(vals[i])
+        {
+            minutes++;
+        }
+    }
+    return (minutes / 60);
 }
 
 /**********************************************************************
