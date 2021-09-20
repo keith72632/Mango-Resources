@@ -36,7 +36,7 @@ function getPeakFlow(dpoint)
 
 
 //gets the amount of fluoride fed within the last 24 hours in pounds.
-function fluoride(dpoint)
+function fluoride_used(dpoint)
 {
     var fin = new Date();
     var day_range = (1000 * 60) * 1440; //24 hours
@@ -52,8 +52,7 @@ function fluoride(dpoint)
     return result;
 }
 
-//This is the last fluoride weight value registered(T00:00)
-function fluoride_level(dpoint)
+function lime_used(dpoint, concentration)
 {
     var fin = new Date();
     var day_range = (1000 * 60) * 1440; //24 hours
@@ -63,15 +62,27 @@ function fluoride_level(dpoint)
 
     var first = dpoint.getStats(start.getTime(), fin.getTime()).firstValue;
     var last = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
-    var first_int = float_to_int(first);
-    var last_int = float_to_int(last);
-    var result = (first_int - last_int);
+    var result = (first - last);
+    return (((result * 587) * 10.5) * concentration);
+}
+
+//This is the last fluoride weight value registered(T00:00)
+function chem_level(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+
+    var last = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
+ 
     return last;
 }
 
 
 //Calculates the amount of ammonia fed for the previous 24 hours
-function ammonia(finish_meter, chlorine_res)
+function ammonia_used(finish_meter, chlorine_res)
 {
     var fin = new Date();
     var day_range = (1000 * 60) * 1440; //24 hours
@@ -93,11 +104,24 @@ function ammonia(finish_meter, chlorine_res)
 }
 
 //Calculates the amount of chlorine fed during previous 24 hours
-function chlorine(dpoint, residual)
+function chlorine_used(dpoint, residual)
 {
     var flow = total_flow(dpoint);
     
     return flow * residual * 8.34;
+}
+
+function get_chlorine_low(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+    
+    var chlorine_avg = dpoint.getStats(start.getTime(), fin.getTime()).average;
+    
+    return (chlorine_avg * 0.75);
 }
 
 //Lowest clearwell reading over 24 hour period
@@ -181,6 +205,7 @@ function get_prev_low(dpoint)
     return low;
 }
 
+//returns average for data point during previous 24 hours
 function get_prev_avg(dpoint)
 {
     var fin = new Date();
