@@ -158,24 +158,7 @@ function get_chlorine_low(dpoint, min)
     
     var chlorine_readings = dpoint.pointValuesBetween(start.getTime(), fin.getTime());
     
-    // for(var i = 0; i < chlorine_readings.length - 1; i++)
-    // {
-    //     // print(chlorine_readings[i].value);
-    //     if(chlorine_readings[i].value > minFixed){
-    //         cl_list.push(chlorine_readings[i].value);
-    //     }
-    // }
-    
-    // //find lowest
-    // var lowest = cl_list[0];
-    // for(var i = 0; i < cl_list.length - 1; i++)
-    // {
-    //     if(cl_list[i] < cl_list[i+1]){
-    //         lowest == cl_list[i];
-    //         print("cl_list[i]: " + cl_list[i] + " cl_list[i+1]: " + cl_list[i+1] + "lowest: " + lowest);
-    //     }
-    // }
-    // print("Lowest Reading: " + lowest);
+
     var chlorine_low = dpoint.getStats(start.getTime(), fin.getTime()).minimumValue;
     
     return Number(chlorine_low.toFixed(2));
