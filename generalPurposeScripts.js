@@ -244,7 +244,9 @@ function hours_run(dpoint)
         }
     }
     print('Minutes' + minutes);
-    return (minutes / 60);
+    var result = Number(minutes / 60).toFixed(0.25);
+    print(result);
+    return result;
 }
 
 /**********************************************************************
