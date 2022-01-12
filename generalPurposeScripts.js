@@ -306,7 +306,6 @@ function get_total_usage(west_station, east_station, berryville, hailey, green_f
 
 function leak_detection_pre_pinemountain(fin_flow, total_usage, pine_mountain_flow)
 {
-    var temp = 0;
     print('Finished Flow ' + fin_flow.value);
     print('Total Usage ' + total_usage.value);
     print('Pine Mountain Intake ' + pine_mountain_flow.value);
