@@ -82,7 +82,7 @@ function lime_used(dpoint, concentration)
     if(final > 0)
     {
         print("Final Result Fixed: " + Number(final.toFixed(2)));
-        return Number(final.toFixed(2));
+        return Number(final.toFixed(0));
     }
     else
     {
@@ -290,4 +290,35 @@ function get_prev_avg(dpoint)
     var chlorine_avg = dpoint.getStats(start.getTime(), fin.getTime()).average;
     
     return chlorine_avg;
+}
+
+function get_total_usage(west_station, east_station, berryville, hailey, green_forest)
+{
+    print("West station " + west_station.value);
+    print("East station " + east_station.value);
+    print("Berryville Meter " + berryville.value);
+    print("Hailey road " + hailey.value);
+    print("Green forest " + green_forest.value);
+    
+    var total = west_station.value + east_station.value + berryville.value + hailey.value + green_forest.value;
+    return total;
+}
+
+function leak_detection_pre_pinemountain(fin_flow, total_usage, pine_mountain_flow)
+{
+    var temp = 0;
+    print('Finished Flow ' + fin_flow.value);
+    print('Total Usage ' + total_usage.value);
+    print('Pine Mountain Intake ' + pine_mountain_flow.value);
+    var flag;
+    if(fin_flow.value > total_usage.value && pine_mountain_flow === 0)
+    {
+        flag = 1;
+        return true;
+    }
+    else
+    {
+        flag = 0;
+        return false;
+    }
 }
