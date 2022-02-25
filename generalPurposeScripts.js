@@ -321,3 +321,56 @@ function leak_detection_pre_pinemountain(fin_flow, total_usage, pine_mountain_fl
         return false;
     }
 }
+
+function get(dpoint)
+{
+    return dpoint.value;
+}
+
+function bw_pump_meter(dpoint)
+{
+    var cnt = 0;
+    var res;
+    while(dpoint.value)
+    {
+        cnt ++;
+        setTimeout(function(cnt){ cnt++; }, 1000);
+    }
+    res = cnt * 66.6;
+    return res.toFixed(0);
+}
+
+function get_gpm(flow)
+{
+    print('Flow gpm = ' + flow.value);
+    var gpm = (flow.value * 1000000) / 1440;
+    print('GPM = ' + gpm);
+    return gpm;
+}
+
+function get_three_filters(time, flow)
+{
+    var f = get_gpm(flow);
+    var res = ((f * time.value) * 4) / 3;
+    print('Three Filters' + res);
+    return res;
+}
+
+function get_backwashed(time)
+{
+    return time.value * 4000;
+}
+
+function backwash_total(time, flow)
+{
+    var backwashed = get_backwashed(time);
+    var used = get_three_filters(flow, time); 
+    return backwashed + used + 5280;
+}
+
+function increment(dpoint)
+{
+    print("Before" + dpoint.value);
+    RuntimeManager.refreshDataPoint(dpoint);
+    print("After" + dpoint.value);
+}
