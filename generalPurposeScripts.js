@@ -348,6 +348,11 @@ function get_gpm(flow)
     return gpm;
 }
 
+function get_drawdown(feet)
+{
+    return feet.value * 2693;
+}
+
 function get_three_filters(time, flow)
 {
     var f = get_gpm(flow);
@@ -361,11 +366,12 @@ function get_backwashed(time)
     return time.value * 4000;
 }
 
-function backwash_total(time, flow)
+function backwash_total(time, flow, feet)
 {
     var backwashed = get_backwashed(time);
     var used = get_three_filters(flow, time); 
-    return backwashed + used + 5280;
+    var drawdown = get_drawdown(feet);
+    return backwashed + used + drawdown;
 }
 
 function increment(dpoint)
@@ -373,4 +379,41 @@ function increment(dpoint)
     print("Before" + dpoint.value);
     RuntimeManager.refreshDataPoint(dpoint);
     print("After" + dpoint.value);
+}
+
+function generator_status(val)
+{
+    var status = Number(val.toFixed(0));
+    if(status === 0){
+        print("INITIALIZATION " + status);
+        return "INITIALIZATION";
+    } else if(status === 1) {
+        print("PRE-CRANK" + status);
+        return "PRE-CRANK";
+    } else if(status === 2) {
+        print("STARTING" + status);
+        return "STARTING";
+    } else if(status === 3) {
+        print("RUNNING" + status);
+        return "RUNNING";
+    } else if(status === 4) {
+        print("PRE-COOLDOWN" + status);
+        return "PRE-COOLDOWN";
+    } else if(status === 5) {
+        print("COOLDOWN" + status);
+        return "COOLDOWN";
+    } else if(status === 6) {
+        print("STOPPING" + status);
+        return "STOPPING";
+    } else if(status === 7) {
+        print("STOPPED" + status);
+        return "STOPPED";
+    } else if(status === 8) {
+        print("IDLING" + status);
+        return "IDLING";
+    }
+    else {
+        print("No status message" + status);
+        return "ERROR";
+    }
 }
