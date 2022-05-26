@@ -417,3 +417,29 @@ function generator_status(val)
         return "ERROR";
     }
 }
+
+function breaker_status(val)
+{
+    var status = Number(val.toFixed(0));
+    if(status === 0){
+        print("OPEN " + status);
+        return "OPEN";
+    } else if(status === 1) {
+        print("CLOSED" + status);
+        return "CLOSED";
+    } else if(status === 2) {
+        print("TRIPPED" + status);
+        return "TRIPPED";
+    }
+    else {
+        print("No status message" + status);
+        return "ERROR";
+    }
+}
+
+function get_bd_time(dp)
+{
+    var seconds = dp.value / 1.667;
+    print(seconds / 60);
+    return seconds / 60;
+}
