@@ -443,3 +443,31 @@ function get_bd_time(dp)
     print(seconds / 60);
     return seconds / 60;
 }
+
+function get_daily_dif(dpoint)
+{
+    var fin = new Date();
+    var day_range = (1000 * 60) * 1440; //24 hours
+    fin.setHours(0, 0, 0 , 0); //sets end of range to midnight
+    
+    var start = new Date(fin.getTime() - day_range);
+
+    var first = dpoint.getStats(start.getTime(), fin.getTime()).firstValue;
+    // print(dpoint.getStats(start.getTime(), fin.getTime()));
+    var last = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
+    print(last);
+    var result = (last - first);
+    print("Result: " + result);   
+    
+    return result;
+
+}
+function total_discharge_west(val)
+{
+    return val * 1982;
+}
+
+function total_discharge_east(val)
+{
+    return val * 1500;
+}
