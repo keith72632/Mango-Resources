@@ -453,9 +453,10 @@ function get_daily_dif(dpoint)
     var start = new Date(fin.getTime() - day_range);
 
     var first = dpoint.getStats(start.getTime(), fin.getTime()).firstValue;
+    print("first: " + first);
     // print(dpoint.getStats(start.getTime(), fin.getTime()));
     var last = dpoint.getStats(start.getTime(), fin.getTime()).lastValue;
-    print(last);
+    print("last:" +last);
     var result = (last - first);
     print("Result: " + result);   
     
@@ -464,10 +465,40 @@ function get_daily_dif(dpoint)
 }
 function total_discharge_west(val)
 {
-    return val * 1982;
+    var temp = val * 1982;
+    return temp.toFixed(0);
 }
 
 function total_discharge_east(val)
 {
-    return val * 1500;
+    var temp = val * 1500;
+    return temp.toFixed(0);
+}
+
+function get_average(dpoint)
+{
+    var end = new Date();
+    var start = new Date(end.getTime() - (1000 * 60 * 1440));
+    var stats = dpoint.getStats(start.getTime(), end.getTime());
+    print(stats);
+    var average = stats.average;
+    print("Average = " + average);
+    return average;
+}
+
+function breaker_status_bool(dpoint)
+{
+    if(dpoint){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function gen_running(dpoint){
+    if(dpoint === 7) {
+        return false;
+    } else {
+        return true;
+    }
 }
