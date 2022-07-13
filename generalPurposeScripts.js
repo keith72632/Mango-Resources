@@ -502,3 +502,11 @@ function gen_running(dpoint){
         return true;
     }
 }
+
+function main_bus_status(bkr1_status, bkr2_status, bkr3_status, bkr5_status){
+    if(bkr1_status === 1 || bkr2_status === 1 || bkr3_status === 1 || bkr5_status === 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
