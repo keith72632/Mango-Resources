@@ -559,6 +559,13 @@ function chlorine_low_alarm(chlorine){
     }
 }
 
+function high_pressure_alarm(pressure, const_limit){
+    if(pressure.value >= const_limit){
+        return true;
+    } else {
+        return false;
+    }
+}
 /*
 Takes the actual ammonia feed rate and compares it to desired ammonia feed rate. If the actual feed rate out of the desired range
 determined by the const_range_factor (percentage represented in decimal), then returns true
