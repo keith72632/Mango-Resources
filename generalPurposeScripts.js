@@ -518,3 +518,60 @@ function east_ats_status(dpoint) {
         return "OPEN";
     }
 }
+
+function high_turb_alarm(filter){
+    if(filter.value >= 0.30){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function clearwell_low_alarm(level, low_sp){
+    if(level.value <= low_sp.value){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function clearwell_high_alarm(level, high_sp){
+    if(level.value >= high_sp.value){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function chlorine_high_alarm(chlorine){
+    if(chlorine.value >= 3.50){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function chlorine_low_alarm(chlorine){
+    if(chlorine.value <= 0.50){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+/*
+Takes the actual ammonia feed rate and compares it to desired ammonia feed rate. If the actual feed rate out of the desired range
+determined by the const_range_factor (percentage represented in decimal), then returns true
+*/
+function nh3_alarm(feed_rate, free_cl2_residual, finish_flow, const_range_factor, ratio){
+    var correct_feed_rate = (free_cl2_residual.value * finish_flow.value * 8.34) / ratio.value;
+    print("Correct Feed Rate " + correct_feed_rate);
+    print("Actual Feed Rate " + feed_rate.value);
+    var range = correct_feed_rate * const_range_factor;
+    print("Range " + (correct_feed_rate + range) + " to " + (correct_feed_rate - range));
+    if(feed_rate.value >= (correct_feed_rate + range) || feed_rate.value <= correct_feed_rate - range) {
+        return true;
+    } else {
+        return false;
+    }
+}
