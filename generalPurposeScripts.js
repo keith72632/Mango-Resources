@@ -582,3 +582,26 @@ function nh3_alarm(feed_rate, free_cl2_residual, finish_flow, const_range_factor
         return false;
     }
 }
+
+function high_alarm(dpoint, const_level){
+    if(dpoint.value >= const_level){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function low_alarm(dpoint, const_level){
+    if(dpoint.value <= const_level){
+        return true;
+    } else {
+        return false;
+    }
+}
+function low_oil_pressure_alarm(gen_status, oil_press, const_level){
+    if(gen_status.value === 3 && oil_press.value <= const_level) {
+        return true;
+    } else {
+        return false;
+    }
+}
