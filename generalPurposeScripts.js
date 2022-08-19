@@ -605,3 +605,13 @@ function low_oil_pressure_alarm(gen_status, oil_press, const_level){
         return false;
     }
 }
+
+function turb_correction(target_cell, secondary_cell){
+    if(target_cell.value <= 0.0){
+        print("Making correction. Returning second value " + secondary_cell.value);
+        return secondary_cell.value - 0.01;
+    }else{
+        print("Return target value " + target_cell.value);
+        return target_cell.value;
+    }
+}
