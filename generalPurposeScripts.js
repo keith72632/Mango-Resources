@@ -609,9 +609,22 @@ function low_oil_pressure_alarm(gen_status, oil_press, const_level){
 function turb_correction(target_cell, secondary_cell){
     if(target_cell.value <= 0.0){
         print("Making correction. Returning second value " + secondary_cell.value);
-        return secondary_cell.value - 0.01;
+        return secondary_cell.value - 0.012;
     }else{
         print("Return target value " + target_cell.value);
         return target_cell.value;
     }
+}
+
+function get_daily_flow(dpoint){
+    var end = new Date();
+    var start = new Date(end.getTime() - (60000 * 1440));
+    end.setHours(0, 0, 0 , 0);
+    var stats = dpoint.getStats(start.getTime(), end.getTime());
+    
+    var average = stats.getAverage().toFixed(3);
+    
+    print(average);
+    
+    return average;
 }
